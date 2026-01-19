@@ -5,11 +5,9 @@
 
 과제를 받자마자 **주도적으로 문제를 정의**하고 다음과 같은 핵심 질문을 스스로에게 던졌습니다.
 
-<<<<<<< HEAD
+
 **3시간 안에 무엇을 반드시 보여줘야 하는가?**
-=======
-**3시간 안에 무엇을 반드시 보여줘야 하는가?** 
->>>>>>> b01f3c6af39259686df844b3528481eb6708cace
+
 그리고 확장 가능한 아키텍처란 무엇을 의미하는가?에 대한 깊은 고민을 시작했습니다.
 
 ### 1.1 문제 정의 및 우선순위 설정
@@ -47,11 +45,7 @@
 - **아키텍처 설계 - 인터페이스 추상화 (`AiClient`)**:
     - **설계 의도**: `AiClient` 인터페이스를 정의하고 `OpenAiClientImpl` 를 구현하도록 했습니다.
     - **코드 예시**:
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> b01f3c6af39259686df844b3528481eb6708cace
         ```kotlin
         interface AiClient {
             fun generateResponse(question: String, chatHistory: List<Chat>, model: String?): String
@@ -60,11 +54,6 @@
         // 향후 class ClaudeClientImpl : AiClient 추가 가능
         
         ```
-<<<<<<< HEAD
-
-=======
-        
->>>>>>> b01f3c6af39259686df844b3528481eb6708cace
     - **실무 관점**: B2B AI 플랫폼처럼 다양한 AI 모델 지원이 필요한 상황에서 특정 Provider에 종속되지 않는 유연한 아키텍처를 제공합니다.
 - **데이터베이스 스키마 설계**:
     - `User`, `Thread`, `Chat`, `Feedback` 엔티티 간의 관계를 명확히 설정했습니다. 특히 `Thread` 엔티티에 `lastActivityAt` 컬럼을 추가하여 30분 스레드 유지 로직의 핵심으로 활용했습니다.
@@ -134,11 +123,6 @@ AI는 개발자의 생산성을 극대화하는 강력한 도구이지만 그 �
     - **도전**: 사용자가 마지막 질문을 한 시점으로부터 30분이 경과했는지 정확히 판단하여 새 스레드를 생성하거나 기존 스레드를 유지해야 했습니다.
     - **해결책**: `Thread` 엔티티에 `lastActivityAt` (마지막 활동 시간) 컬럼을 추가하고 새로운 채팅이 발생할 때마다 이 시간을 `LocalDateTime.now()`로 갱신하도록 했습니다. 스레드의 만료 여부는 `isExpired()` 메서드에서 `LocalDateTime.now().isAfter(lastActivityAt.plusMinutes(30))`와 같이 현재 시간과 `lastActivityAt`을 비교하여 계산하도록 구현했습니다. 이는 **만료 시간을 저장**하는 대신 **마지막 활동 시간을 저장하고 매번 만료 여부를 계산**하는 **'상태 계산'** 방식의 핵심 인사이트를 통해 해결했습니다.
     - **코드 예시 (Thread.kt)**:
-<<<<<<< HEAD
-
-=======
-        
->>>>>>> b01f3c6af39259686df844b3528481eb6708cace
         ```kotlin
         @Entity
         class Thread(
@@ -156,15 +140,8 @@ AI는 개발자의 생산성을 극대화하는 강력한 도구이지만 그 �
         }
         
         ```
-<<<<<<< HEAD
-
-    - **코드 예시 (ChatService.kt - getOrCreateActiveThread)**:
-
-=======
         
     - **코드 예시 (ChatService.kt - getOrCreateActiveThread)**:
-        
->>>>>>> b01f3c6af39259686df844b3528481eb6708cace
         ```kotlin
         private fun getOrCreateActiveThread(user: User): Thread {
             val latestThread = threadRepository.findTopByUserOrderByLastActivityAtDesc(user)
@@ -179,20 +156,10 @@ AI는 개발자의 생산성을 극대화하는 강력한 도구이지만 그 �
         }
         
         ```
-<<<<<<< HEAD
-
-=======
-        
->>>>>>> b01f3c6af39259686df844b3528481eb6708cace
 2. **AI에게 이전 대화 전달하기**:
     - **도전**: Gemini API는 Stateless이므로 이전 대화 내용을 매번 API 요청에 포함시켜야 AI가 컨텍스트를 유지하고 자연스러운 대화를 이어갈 수 있습니다. 하지만 너무 많은 대화를 보내면 토큰 비용이 증가할 수 있다는 점도 고려해야 했습니다.
     - **해결책**: 데이터베이스 스키마를 `Thread`와 `Chat` 간의 관계를 명확히 설정하여 특정 스레드에 속한 모든 대화(`Chat` 엔티티)를 `created_at` 기준으로 시간순으로 조회할 수 있도록 했습니다. 이후 `OpenAiClientImpl`의 `buildRequestBody` 메서드에서 이 `chatHistory`를 Gemini API의 `contents` 형식에 맞춰 변환하여 요청 본문에 포함시켰습니다.
     - **코드 예시 (buildRequestBody)**:
-<<<<<<< HEAD
-
-=======
-        
->>>>>>> b01f3c6af39259686df844b3528481eb6708cace
         ```kotlin
         private fun buildRequestBody(question: String, chatHistory: List<Chat>, context: String?): Map<String, Any> {
             val contents = mutableListOf<Map<String, Any>>()
@@ -208,15 +175,9 @@ AI는 개발자의 생산성을 극대화하는 강력한 도구이지만 그 �
         }
         
         ```
-<<<<<<< HEAD
-
     - **실제 API 호출 예시 (3번째 질문 시 Gemini API에 전송되는 데이터)**:
 
-=======
-        
-    - **실제 API 호출 예시 (3번째 질문 시 Gemini API에 전송되는 데이터)**:
-        
->>>>>>> b01f3c6af39259686df844b3528481eb6708cace
+
         ```json
         {
           "contents": [
@@ -229,9 +190,6 @@ AI는 개발자의 생산성을 극대화하는 강력한 도구이지만 그 �
         }
         
         ```
-        
-
-<<<<<<< HEAD
 
 ### 검증 및 테스트
 
@@ -240,15 +198,6 @@ AI는 개발자의 생산성을 극대화하는 강력한 도구이지만 그 �
 
 ### 이 경험을 통해 배운 것
 
-=======
-### 검증 및 테스트
-
-- **테스트 시나리오**: `api-test.http` 파일을 활용하여 연속 질문 시 동일 스레드가 유지되는지 30분 경과 후 질문 시 새 스레드가 생성되는지 시나리오를 직접 테스트하여 로직의 정확성을 검증했습니다.
-- **실제 DB 검증**: 데이터베이스에서 `threads` 테이블의 `created_at`과 `last_activity_at` 컬럼을 확인하여 모든 연속 질문이 같은 스레드에 저장되고 만료 시 새 스레드가 생성되는 것을 확인했습니다.
-
-### 이 경험을 통해 배운 것
-
->>>>>>> b01f3c6af39259686df844b3528481eb6708cace
 - **복잡한 문제 분할**: **스레드 만료 판단**과 **컨텍스트 전달**이라는 두 개의 독립적인 문제로 분할하여 각각 해결한 후 통합하는 방식의 중요성을 깨달았습니다.
 - **데이터베이스 설계의 중요성**: `lastActivityAt` 컬럼 하나가 전체 로직의 핵심이 되었으며 처음부터 완벽한 설계보다는 반복적인 개선의 중요성을 배웠습니다.
 - **실무 관점의 트레이드오프**: 모든 대화를 AI에 전달하면 토큰 비용이 증가하고 최근 N개만 전달하면 컨텍스트 손실이 발생할 수 있다는 점을 인지하며 현재는 전체 전달 방식을 채택하고 향후 필요시 슬라이딩 윈도우 적용 가능성을 고려했습니다.
@@ -307,13 +256,7 @@ AI는 개발자의 생산성을 극대화하는 강력한 도구이지만 그 �
 ---
 
 **작성자**: 석재민
-<<<<<<< HEAD
 <br>**작성일**: 2026-01-19
 <br>**프로젝트 저장소**: https://github.com/0525aa36/intelligent-chatbot
 <br>**연락처**: 0525aa36@gmail.com
-=======
-**작성일**: 2026-01-19
-**프로젝트 저장소**: https://github.com/0525aa36/intelligent-chatbot
-**연락처**: 0525aa36@gmail.com
->>>>>>> b01f3c6af39259686df844b3528481eb6708cace
 
