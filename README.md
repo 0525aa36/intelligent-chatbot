@@ -258,3 +258,9 @@ AI는 개발자의 생산성을 극대화하는 강력한 도구이지만 그 �
 <img width="924" height="859" alt="image" src="https://github.com/user-attachments/assets/84d3083b-f55d-4353-9ca3-538d7e3f76c7" />
 
 ---
+
+**작성자**: 석재민
+**작성일**: 2026-01-19
+**프로젝트 저장소**: https://github.com/0525aa36/intelligent-chatbot
+**연락처**: 0525aa36@gmail.com
+
