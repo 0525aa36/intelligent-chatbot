@@ -241,13 +241,16 @@ AI는 개발자의 생산성을 극대화하는 강력한 도구이지만 그 �
 ### 9. 피드백 생성
 ### 긍정
 <img width="949" height="859" alt="image" src="https://github.com/user-attachments/assets/7ea489a5-c79b-4908-a3c2-3c64f551e04e" />
+
 ### 부정
 <img width="918" height="767" alt="image" src="https://github.com/user-attachments/assets/787c5995-9e45-42a5-b346-633573e3c063" />
 
 ### 10. 피드백 목록 조회
 <img width="796" height="1261" alt="image" src="https://github.com/user-attachments/assets/71e0bef0-2757-4bf6-acf3-53e19cf404f9" />
+
 ### 긍정 필터
 <img width="973" height="974" alt="image" src="https://github.com/user-attachments/assets/d70747c6-6f06-4767-a5cd-c88fb6221a9c" />
+
 ### 부정 필터
 <img width="986" height="964" alt="image" src="https://github.com/user-attachments/assets/4c8e5ab9-d9d1-4d9e-90b8-a8f767aee919" />
 
